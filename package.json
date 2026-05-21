@@ -1,0 +1,9 @@
+{
+  "name": "de-glee",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DE GLEE beauty storefront with protected owner dashboard",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

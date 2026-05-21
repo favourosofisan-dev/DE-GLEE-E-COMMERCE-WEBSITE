@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DE GLEE | Owner Dashboard</title>
+  <meta
+    name="description"
+    content="Manage DE GLEE products, prices, and images from the owner dashboard."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="images/DE%20GLEE%20LOGO.jpeg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-page-body">
+  <div class="site-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="shell header-shell">
+      <a class="brand" href="shop.html" aria-label="DE GLEE home">
+        <img class="brand-logo" src="images/DE%20GLEE%20LOGO.jpeg" alt="DE GLEE logo">
+        <span class="brand-wordmark">
+          <strong>DE GLEE</strong>
+          <small>Owner dashboard</small>
+        </span>
+      </a>
+
+      <nav class="site-nav admin-nav" aria-label="Dashboard navigation">
+        <a href="shop.html">Shop</a>
+        <a href="index.html">Account</a>
+        <a href="admin-login.html">Admin login</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="shell admin-shell">
+    <section class="admin-hero">
+      <div>
+        <p class="eyebrow">Catalog control</p>
+        <h1>Update products, pricing, and product images in one place.</h1>
+        <p class="admin-hero-copy">
+          This first owner dashboard saves product changes in your browser so you can manage the storefront layout
+          immediately. When we connect a backend, the same form can save to your database and upload real files.
+        </p>
+      </div>
+
+      <div class="admin-hero-panel">
+        <p class="admin-status" id="adminStatus">Catalog ready.</p>
+        <div class="admin-hero-actions">
+          <button class="button button-secondary" id="newProductBtn" type="button">Add product</button>
+          <button class="button button-secondary" id="resetCatalogBtn" type="button">Reset demo catalog</button>
+          <a class="button button-primary" href="shop.html">Preview storefront</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="admin-sidebar-head">
+          <div>
+            <p class="eyebrow">Products</p>
+            <h2>Catalog</h2>
+          </div>
+          <p class="admin-count" id="productCount">0 products</p>
+        </div>
+
+        <label class="admin-search">
+          <span class="visually-hidden">Search products</span>
+          <input id="adminSearch" type="search" placeholder="Search by name or category">
+        </label>
+
+        <div class="admin-product-list" id="adminProductList"></div>
+      </aside>
+
+      <section class="admin-editor">
+        <div class="admin-editor-head">
+          <div>
+            <p class="eyebrow">Editor</p>
+            <h2 id="editorTitle">Product details</h2>
+          </div>
+          <button class="button button-secondary button-small" id="deleteProductBtn" type="button">Delete product</button>
+        </div>
+
+        <form class="admin-form" id="productForm">
+          <div class="admin-form-grid">
+            <label>
+              Product name
+              <input name="name" type="text" required placeholder="Radiance Body Lotion">
+            </label>
+
+            <label>
+              Price
+              <input name="price" type="number" step="0.01" min="0" required placeholder="24.00">
+            </label>
+
+            <label>
+              Category ID
+              <input name="category" type="text" required placeholder="body-care">
+            </label>
+
+            <label>
+              Category label
+              <input name="categoryLabel" type="text" required placeholder="Body care">
+            </label>
+
+            <label>
+              Badge
+              <input name="badge" type="text" placeholder="Bestseller">
+            </label>
+
+            <label>
+              Image path or URL
+              <input name="image" type="text" placeholder="images/my-product.jpeg">
+            </label>
+          </div>
+
+          <label>
+            Description
+            <textarea name="description" rows="5" required placeholder="Short benefit-focused product description"></textarea>
+          </label>
+
+          <div class="admin-upload-card">
+            <div>
+              <strong>Upload a local image for this browser preview</strong>
+              <p>
+                Choose a file to store it as a browser only preview image. This is useful now, but a real backend
+                should eventually store uploads permanently.
+              </p>
+            </div>
+            <label class="button button-secondary admin-file-button">
+              Choose image
+              <input id="imageUpload" type="file" accept="image/*" hidden>
+            </label>
+          </div>
+
+          <div class="admin-preview" id="imagePreviewWrap" hidden>
+            <img id="imagePreview" alt="Selected product preview">
+          </div>
+
+          <div class="admin-form-actions">
+            <button class="button button-primary" type="submit">Save product</button>
+          </div>
+        </form>
+      </section>
+    </section>
+
+    <section class="admin-orders">
+      <div class="admin-orders-head">
+        <div>
+          <p class="eyebrow">Orders</p>
+          <h2>Delivery requests</h2>
+        </div>
+        <p class="admin-count" id="orderCount">0 orders</p>
+      </div>
+      <div class="admin-config-banner" id="adminConfigBanner" hidden></div>
+      <div class="admin-order-list" id="adminOrderList"></div>
+    </section>
+  </main>
+
+  <script src="products.js"></script>
+  <script src="catalog.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

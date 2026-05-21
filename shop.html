@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DE GLEE | Beauty & Cosmetics</title>
+  <meta
+    name="description"
+    content="Shop curated skincare and body care at DE GLEE — modern beauty essentials with a luxurious, mobile-first experience."
+  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/jpeg" href="images/DE%20GLEE%20LOGO.jpeg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="site-noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="shell header-shell">
+      <a class="brand" href="#top" aria-label="DE GLEE home">
+        <img class="brand-logo" src="images/DE%20GLEE%20LOGO.jpeg" alt="DE GLEE logo">
+        <span class="brand-wordmark">
+          <strong>DE GLEE</strong>
+          <small>Beauty & cosmetics</small>
+        </span>
+      </a>
+
+      <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="siteNav">
+        Menu
+      </button>
+
+      <nav class="site-nav" id="siteNav" aria-label="Primary">
+        <a href="#shop">Shop</a>
+        <a href="#ai-recommendation">Skincare Recommendation</a>
+        <a href="#about-us">About Us</a>
+        <a href="#contact">Contact</a>
+        <a href="admin-login.html">Owner dashboard</a>
+        <a href="index.html">Account</a>
+      </nav>
+
+      <button class="cart-toggle" id="cartToggle" type="button" aria-expanded="false" aria-controls="cartDrawer">
+        <span class="cart-toggle-label">Cart</span>
+        <span class="cart-badge" id="cartBadge" hidden>0</span>
+      </button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="hero-copy">
+        <p class="eyebrow">Modern beauty, quietly luxurious</p>
+        <h1>Skincare and body care, curated for a refined everyday glow.</h1>
+        <p class="hero-text">
+          Shop DE GLEE — a polished beauty destination for softness, radiance, and confidence.
+          From daily essentials to glow boosting favorites, every product is presented with modern luxury.
+        </p>
+
+        <div class="hero-actions">
+          <a class="button button-primary" href="#shop">Shop now</a>
+          <a class="button button-secondary" href="#about-us">About us</a>
+        </div>
+
+        <ul class="hero-points" aria-label="Brand highlights">
+          <li>curated beauty products</li>
+          <li>Free shipping on orders over ₦50,000</li>
+          <li>Secure checkout &amp; cart saved locally</li>
+        </ul>
+      </div>
+
+      <div class="hero-visual" aria-hidden="true">
+        <article class="floating-card floating-card-main">
+          <span>New season</span>
+          <strong>Rich purple, luminous gold, and elegant editorial calm</strong>
+        </article>
+        <article class="floating-card floating-card-accent">
+          <span>Shop the edit</span>
+          <strong>Skincare, body care, serums, and glow essentials in one place</strong>
+        </article>
+        <div class="hero-stack">
+          <figure class="hero-shot hero-shot-tall">
+            <img src="images/olay regenerist.jpeg" alt="DE GLEE featured beauty product">
+          </figure>
+          <figure class="hero-shot hero-shot-small">
+            <img src="images/advanced korean skin body oil.jpeg" alt="DE GLEE body care product">
+          </figure>
+          <figure class="hero-shot hero-shot-wide">
+            <img src="images/simple replenishing moisturizer.jpeg" alt="DE GLEE skincare product">
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="shop shell" id="shop">
+      <div class="section-copy section-copy-wide shop-intro">
+        <p class="eyebrow">Shop DE GLEE</p>
+        <h2>Curated beauty essentials for glow, care, and everyday indulgence.</h2>
+        <p class="shop-note">Browse by category, search your routine, and add favorites to your cart.</p>
+      </div>
+
+      <div class="shop-toolbar">
+        <label class="search-field">
+          <span class="visually-hidden">Search products</span>
+          <input id="shopSearch" type="search" placeholder="Search skincare, body care, serums…" autocomplete="off">
+        </label>
+
+        <label class="sort-field">
+          <span>Sort by</span>
+          <select id="shopSort" aria-label="Sort products">
+            <option value="featured">Featured</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="category-filters" id="categoryFilters" aria-label="Product categories"></div>
+
+      <p class="shop-count" id="shopCount" aria-live="polite"></p>
+      <div class="shop-grid" id="shopGrid"></div>
+    </section>
+
+    <section class="recommendation shell" id="ai-recommendation">
+      <div class="recommendation-layout">
+        <div class="section-copy">
+          <p class="eyebrow">AI Skincare Guide</p>
+          <h2>Tell us about your skin and get a DE GLEE product edit.</h2>
+          <p class="shop-note">
+          </p>
+        </div>
+
+        <div class="recommendation-card">
+          <form class="recommendation-form" id="recommendationForm">
+            <label>
+              Skin type
+              <select name="skinType" required>
+                <option value="">Choose skin type</option>
+                <option value="dry">Dry</option>
+                <option value="oily">Oily</option>
+                <option value="combination">Combination</option>
+                <option value="sensitive">Sensitive</option>
+                <option value="normal">Normal</option>
+              </select>
+            </label>
+
+            <label>
+              Main concern
+              <select name="concern" required>
+                <option value="">Choose concern</option>
+                <option value="acne">Breakouts / acne</option>
+                <option value="dark-spots">Dark spots</option>
+                <option value="dryness">Dryness</option>
+                <option value="aging">Fine lines / aging</option>
+                <option value="dullness">Dullness</option>
+                <option value="barrier">Sensitive barrier support</option>
+              </select>
+            </label>
+
+            <label>
+              Routine goal
+              <select name="goal" required>
+                <option value="">Choose goal</option>
+                <option value="cleanse">Gentle cleansing</option>
+                <option value="hydrate">Deep hydration</option>
+                <option value="glow">Glow and brightness</option>
+                <option value="treat">Targeted treatment</option>
+                <option value="simple">Simple everyday routine</option>
+              </select>
+            </label>
+
+            <button class="button button-primary" type="submit">Get my recommendation</button>
+          </form>
+
+          <div class="recommendation-result" id="recommendationResult" hidden>
+            <div class="recommendation-result-head">
+              <div>
+                <p class="eyebrow">Your Match</p>
+                <h3 id="recommendationTitle">Recommended for you</h3>
+              </div>
+              <button class="button button-secondary button-small" id="recommendationReset" type="button">Start over</button>
+            </div>
+            <p class="recommendation-summary" id="recommendationSummary"></p>
+            <div class="recommendation-grid" id="recommendationGrid"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story shell section-grid" id="about-us">
+      <div class="section-copy">
+        <p class="eyebrow">About us</p>
+        <h2>Beauty presented with warmth, elegance, and a carefully curated point of view.</h2>
+      </div>
+      <div class="story-card">
+        <p>
+          DE GLEE brings together skincare and body care favorites in a setting that feels clean, calm, and luxurious.
+          Every product is chosen to support real routines  hydration, glow, barrier care, and gentle cleansing 
+          with an experience that feels effortless from browse to checkout.
+        </p>
+      </div>
+    </section>
+
+    <section class="cta shell" id="contact">
+      <div class="cta-panel">
+        <div>
+          <p class="eyebrow">DE GLEE</p>
+          <h2>Ready to reach us? Connect with DE GLEE on your favorite channel.</h2>
+          <p class="contact-note">
+          </p>
+        </div>
+        <div class="contact-actions" aria-label="Contact DE GLEE">
+          <a class="button button-primary" href="mailto:degleebeautyandcosmetics@gmail.com" data-contact-link="email">Email</a>
+          <a class="button button-secondary" href="https://wa.me/2348061632975" data-contact-link="whatsapp" target="_blank" rel="noreferrer">WhatsApp</a>
+          <a class="button button-secondary" href="#" data-contact-link="tiktok">TikTok</a>
+          <a class="button button-secondary" href="#" data-contact-link="instagram">Instagram</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell footer-shell">
+      <a class="brand brand-footer" href="#top" aria-label="DE GLEE home">
+        <img class="brand-logo" src="images/DE%20GLEE%20LOGO.jpeg" alt="DE GLEE logo">
+        <span class="brand-wordmark">
+          <strong>DE GLEE</strong>
+          <small>Beauty with a polished point of view</small>
+        </span>
+      </a>
+      <p class="footer-note">&copy; <span id="year"></span> DE GLEE. Curated beauty ecommerce.</p>
+    </div>
+  </footer>
+
+  <div class="cart-overlay" id="cartOverlay" hidden></div>
+
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Shopping cart">
+    <div class="cart-drawer-head">
+      <h2>Your cart</h2>
+      <button class="icon-button" id="cartClose" type="button" aria-label="Close cart">Close</button>
+    </div>
+
+    <p class="cart-empty" id="cartEmpty">Your cart is empty. Discover something beautiful in the shop.</p>
+    <div class="cart-items" id="cartItems"></div>
+
+    <div class="cart-summary">
+      <div class="cart-summary-row"><span>Subtotal</span><strong id="cartSubtotal">₦0</strong></div>
+      <div class="cart-summary-row"><span>Shipping</span><strong id="cartShipping">₦0</strong></div>
+      <p class="cart-shipping-note">Free shipping on orders over ₦50,000</p>
+      <div class="cart-summary-row cart-summary-total"><span>Total</span><strong id="cartTotal">₦0</strong></div>
+      <button class="button button-primary button-block" id="checkoutBtn" type="button" disabled>Checkout</button>
+    </div>
+  </aside>
+
+  <div class="modal-overlay" id="productModalOverlay" hidden></div>
+  <section class="modal" id="productModal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" hidden>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 class="visually-hidden" id="productModalTitle">Product details</h2>
+        <button class="icon-button" id="productModalClose" type="button" aria-label="Close product details">Close</button>
+      </div>
+      <div id="productModalBody"></div>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="checkoutModalOverlay" hidden></div>
+  <section class="modal" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle" hidden>
+    <div class="modal-panel modal-panel-wide">
+      <div class="modal-head">
+        <h2 id="checkoutTitle">Checkout</h2>
+        <button class="icon-button" id="checkoutModalClose" type="button" aria-label="Close checkout">Close</button>
+      </div>
+
+      <div class="checkout-layout">
+        <form class="checkout-form" id="checkoutForm">
+          <fieldset>
+            <legend>Contact</legend>
+            <label>
+              Full name
+              <input name="name" type="text" required autocomplete="name">
+            </label>
+            <label>
+              Email
+              <input name="email" type="email" required autocomplete="email">
+            </label>
+            <label>
+              Phone
+              <input name="phone" type="tel" required autocomplete="tel">
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Delivery</legend>
+            <label>
+              Address
+              <input name="address" type="text" required autocomplete="street-address">
+            </label>
+            <label>
+              City
+              <input name="city" type="text" required autocomplete="address-level2">
+            </label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Payment</legend>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="palmpay" checked>
+              <span>PalmPay</span>
+            </label>
+            <label class="radio-card">
+              <input type="radio" name="payment" value="opay">
+              <span>OPay</span>
+            </label>
+            <div class="checkout-payment-note">
+              <strong>Transfer to account number 8061632975</strong>
+              <p>Use the same account number for both PalmPay and OPay. After payment, send your proof of payment on WhatsApp for delivery confirmation.</p>
+            </div>
+          </fieldset>
+
+          <button class="button button-primary button-block" type="submit">Place order</button>
+          <p class="checkout-disclaimer">Demo checkout — no real payment is processed. Connect a payment provider when you go live.</p>
+        </form>
+
+        <aside class="checkout-aside">
+          <h3>Order summary</h3>
+          <div id="checkoutSummary"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal-overlay" id="orderSuccessOverlay" hidden></div>
+  <section class="modal modal-success" id="orderSuccess" role="dialog" aria-modal="true" hidden>
+    <div class="modal-panel modal-panel-narrow">
+      <p class="eyebrow">Thank you</p>
+      <h2 id="orderSuccessTitle">Your order is confirmed</h2>
+      <p id="orderSuccessMessage">We have received your order details. A member of the DE GLEE team will be in touch to confirm delivery.</p>
+      <div class="checkout-payment-note">
+        <strong id="orderSuccessAccount">Payment account number: 8061632975</strong>
+        <p id="orderSuccessReference">Reference: pending</p>
+      </div>
+      <form class="checkout-proof-form" id="paymentProofForm">
+        <label>
+          Transfer note
+          <input id="paymentProofNote" name="paymentNote" type="text" placeholder="Optional transaction note or sender name">
+        </label>
+        <label class="button button-secondary button-block admin-file-button">
+          Upload payment proof
+          <input id="paymentProofFile" name="paymentProofFile" type="file" accept="image/png,image/jpeg,image/webp" hidden>
+        </label>
+        <p class="checkout-disclaimer" id="paymentProofStatus">Upload your receipt here so DE GLEE can confirm payment faster.</p>
+      </form>
+      <div class="contact-actions">
+        <a class="button button-secondary button-block" id="orderSuccessWhatsApp" href="https://wa.me/2348061632975" target="_blank" rel="noreferrer">Send proof on WhatsApp</a>
+        <a class="button button-secondary button-block" id="orderSuccessEmail" href="mailto:degleebeautyandcosmetics@gmail.com">Email order alert</a>
+      </div>
+      <button class="button button-primary button-block" id="orderSuccessClose" type="button">Continue shopping</button>
+    </div>
+  </section>
+
+  <script src="session.js"></script>
+  <script src="products.js"></script>
+  <script src="catalog.js"></script>
+  <script src="cart.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
