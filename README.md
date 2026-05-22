@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # DE GLEE — Beauty Ecommerce
 
 A mobile first ecommerce webapp for **DE GLEE**, a beauty and cosmetics brand. Built with plain HTML, CSS, and JavaScript — no build step required.
@@ -7,7 +8,7 @@ A mobile first ecommerce webapp for **DE GLEE**, a beauty and cosmetics brand. B
 - **Product catalog** — curated products from your `images/` folder with prices and categories
 - **Shop** — search, category filters, and sort (featured, price, name)
 - **Shopping cart** — add to cart, adjust quantities, persistent cart via `localStorage`
-- **Account** — email sign up / sign in, Continue with Google or Apple (demo), then enter the shop
+- **Account** — backend email sign up / sign in with cookie-based sessions
 - **Checkout** — demo order form (contact, delivery, payment method)
 - **Product details** — quick-view modal for each item
 - **Brand experience** — hero, story, and “Why DE GLEE” sections with your existing luxury aesthetic
@@ -18,7 +19,7 @@ A mobile first ecommerce webapp for **DE GLEE**, a beauty and cosmetics brand. B
 |------|---------|
 | `index.html` | Sign in / sign up landing page |
 | `shop.html` | Store page, shop, cart drawer, modals |
-| `auth.js` / `auth.css` / `session.js` | Demo authentication (localStorage) |
+| `auth.js` / `auth.css` / `session.js` | Customer authentication and session handling |
 | `styles.css` | Visual system and responsive layout |
 | `products.js` | Product catalog and categories |
 | `cart.js` | Cart state, pricing, localStorage |
@@ -88,3 +89,35 @@ npm start
 
 Orders are stored in `data/orders.json` and are available in the owner dashboard at `/admin`.
 If SMTP is configured, the server also sends automatic owner alerts for new orders and customer email updates when the order status changes.
+
+## Deploy on Render
+
+Yes, you will need to open Render in your browser and create a Render account.
+
+This project includes a `render.yaml` blueprint for deployment. The easiest flow is:
+
+1. Push this project to GitHub.
+2. Sign in to Render and create a new Blueprint deployment from your GitHub repo.
+3. Render will read `render.yaml` and set up:
+   - a Node web service
+   - the `npm start` command
+   - a persistent disk mounted at `/var/data`
+4. In Render, fill in your real environment variables:
+   - `ADMIN_EMAIL`
+   - `ADMIN_PASSWORD`
+   - `PAYMENT_ACCOUNT_NUMBER`
+   - `ORDER_ALERT_EMAIL`
+   - `WHATSAPP_PHONE`
+   - `SMTP_HOST`
+   - `SMTP_PORT`
+   - `SMTP_SECURE`
+   - `SMTP_USER`
+   - `SMTP_PASS`
+   - `SMTP_FROM`
+5. Deploy the service and open the Render URL when the build finishes.
+
+`DATA_ROOT` is already configured for Render so product data, orders, users, and uploaded payment proofs are stored on the persistent disk instead of being lost on redeploy.
+=======
+# DE-GLEE-E-COMMERCE-WEBSITE
+BEAUTY AND COSMETIC BRAND ECOMMERCE WEBSITE
+>>>>>>> d1e0728332a9586c34af955bcbd36cdbbab5779b

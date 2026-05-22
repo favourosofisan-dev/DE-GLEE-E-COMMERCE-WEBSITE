@@ -21,13 +21,16 @@ const SMTP_SECURE = String(process.env.SMTP_SECURE || "true").trim().toLowerCase
 const SMTP_USER = String(process.env.SMTP_USER || "").trim();
 const SMTP_PASS = String(process.env.SMTP_PASS || "").trim();
 const SMTP_FROM = String(process.env.SMTP_FROM || ORDER_ALERT_EMAIL).trim();
-const SESSION_COOKIE = "deglee-admin-session";
+const ADMIN_SESSION_COOKIE = "deglee-admin-session";
+const CUSTOMER_SESSION_COOKIE = "deglee-customer-session";
 
 const ROOT_DIR = __dirname;
-const DATA_DIR = path.join(ROOT_DIR, "data");
-const UPLOADS_DIR = path.join(ROOT_DIR, "uploads");
+const STORAGE_ROOT = path.resolve(process.env.DATA_ROOT || ROOT_DIR);
+const DATA_DIR = path.join(STORAGE_ROOT, "data");
+const UPLOADS_DIR = path.join(STORAGE_ROOT, "uploads");
 const PRODUCTS_FILE = path.join(DATA_DIR, "products.json");
 const ORDERS_FILE = path.join(DATA_DIR, "orders.json");
+const USERS_FILE = path.join(DATA_DIR, "users.json");
 
 const MIME_TYPES = {
   ".css": "text/css; charset=utf-8",
@@ -42,6 +45,7 @@ const MIME_TYPES = {
 };
 
 const adminSessions = new Map();
+const customerSessions = new Map();
 
 async function ensureDataFiles() {
   await fsp.mkdir(DATA_DIR, { recursive: true });
@@ -58,6 +62,12 @@ async function ensureDataFiles() {
     await fsp.access(ORDERS_FILE);
   } catch {
     await fsp.writeFile(ORDERS_FILE, JSON.stringify([], null, 2), "utf8");
+  }
+
+  try {
+    await fsp.access(USERS_FILE);
+  } catch {
+    await fsp.writeFile(USERS_FILE, JSON.stringify([], null, 2), "utf8");
   }
 }
 
@@ -89,6 +99,16 @@ async function writeOrders(orders) {
   await fsp.writeFile(ORDERS_FILE, JSON.stringify(orders, null, 2), "utf8");
 }
 
+async function readUsers() {
+  const raw = await fsp.readFile(USERS_FILE, "utf8");
+  const parsed = JSON.parse(raw);
+  return Array.isArray(parsed) ? parsed : [];
+}
+
+async function writeUsers(users) {
+  await fsp.writeFile(USERS_FILE, JSON.stringify(users, null, 2), "utf8");
+}
+
 async function updateOrderById(orderId, updater) {
   const orders = await readOrders();
   const index = orders.findIndex((order) => order.id === orderId);
@@ -103,10 +123,10 @@ async function updateOrderById(orderId, updater) {
   return nextOrder;
 }
 
-function createSession(email) {
+function createSession(store, payload) {
   const token = crypto.randomBytes(24).toString("hex");
-  adminSessions.set(token, {
-    email,
+  store.set(token, {
+    ...payload,
     createdAt: Date.now()
   });
   return token;
@@ -126,7 +146,7 @@ function getCookies(request) {
 
 function getAdminSession(request) {
   const cookies = getCookies(request);
-  const token = cookies[SESSION_COOKIE];
+  const token = cookies[ADMIN_SESSION_COOKIE];
   if (!token) {
     return null;
   }
@@ -134,8 +154,46 @@ function getAdminSession(request) {
   return adminSessions.get(token) || null;
 }
 
+function getCustomerSession(request) {
+  const cookies = getCookies(request);
+  const token = cookies[CUSTOMER_SESSION_COOKIE];
+  if (!token) {
+    return null;
+  }
+
+  return customerSessions.get(token) || null;
+}
+
 function isAdminAuthenticated(request) {
   return Boolean(getAdminSession(request));
+}
+
+function isCustomerAuthenticated(request) {
+  return Boolean(getCustomerSession(request));
+}
+
+function buildCookie(name, value, overrides = {}) {
+  const options = {
+    httpOnly: true,
+    path: "/",
+    sameSite: "Lax",
+    ...overrides
+  };
+
+  const parts = [`${name}=${encodeURIComponent(value)}`];
+  if (options.httpOnly) {
+    parts.push("HttpOnly");
+  }
+  if (options.path) {
+    parts.push(`Path=${options.path}`);
+  }
+  if (options.maxAge !== undefined) {
+    parts.push(`Max-Age=${options.maxAge}`);
+  }
+  if (options.sameSite) {
+    parts.push(`SameSite=${options.sameSite}`);
+  }
+  return parts.join("; ");
 }
 
 function sendJson(response, statusCode, payload, extraHeaders = {}) {
@@ -163,6 +221,34 @@ async function readJsonBody(request) {
 
   const raw = Buffer.concat(chunks).toString("utf8");
   return raw ? JSON.parse(raw) : {};
+}
+
+function normalizeEmail(email) {
+  return String(email || "").trim().toLowerCase();
+}
+
+function hashPassword(password, salt = crypto.randomBytes(16).toString("hex")) {
+  const hash = crypto.scryptSync(String(password || ""), salt, 64).toString("hex");
+  return `${salt}:${hash}`;
+}
+
+function verifyPassword(password, storedHash) {
+  const [salt, expectedHash] = String(storedHash || "").split(":");
+  if (!salt || !expectedHash) {
+    return false;
+  }
+
+  const derivedHash = crypto.scryptSync(String(password || ""), salt, 64).toString("hex");
+  return crypto.timingSafeEqual(Buffer.from(derivedHash, "hex"), Buffer.from(expectedHash, "hex"));
+}
+
+function publicUser(user) {
+  return {
+    id: user.id,
+    email: user.email,
+    name: user.name,
+    provider: user.provider || "email"
+  };
 }
 
 function createOrderReference() {
@@ -414,6 +500,119 @@ async function handleApi(request, response, url) {
     return sendJson(response, 200, { products });
   }
 
+  if (request.method === "GET" && url.pathname === "/api/auth/session") {
+    const session = getCustomerSession(request);
+    if (!session) {
+      return sendJson(response, 401, { error: "Unauthorized." });
+    }
+
+    const users = await readUsers();
+    const user = users.find((entry) => entry.id === session.userId);
+    if (!user) {
+      return sendJson(response, 401, { error: "Unauthorized." });
+    }
+
+    return sendJson(response, 200, {
+      authenticated: true,
+      user: publicUser(user)
+    });
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/auth/register") {
+    const body = await readJsonBody(request);
+    const name = String(body.name || "").trim();
+    const email = normalizeEmail(body.email);
+    const password = String(body.password || "");
+
+    if (!name || !email || !password) {
+      return sendJson(response, 400, { error: "Name, email, and password are required." });
+    }
+
+    if (password.length < 6) {
+      return sendJson(response, 400, { error: "Password must be at least 6 characters." });
+    }
+
+    const users = await readUsers();
+    if (users.some((user) => user.email === email)) {
+      return sendJson(response, 409, { error: "An account with this email already exists." });
+    }
+
+    const user = {
+      id: `u-${Date.now()}`,
+      name,
+      email,
+      passwordHash: hashPassword(password),
+      provider: "email",
+      createdAt: new Date().toISOString()
+    };
+
+    users.push(user);
+    await writeUsers(users);
+
+    const token = createSession(customerSessions, {
+      userId: user.id,
+      email: user.email
+    });
+
+    return sendJson(
+      response,
+      201,
+      {
+        success: true,
+        user: publicUser(user)
+      },
+      {
+        "Set-Cookie": buildCookie(CUSTOMER_SESSION_COOKIE, token)
+      }
+    );
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/auth/login") {
+    const body = await readJsonBody(request);
+    const email = normalizeEmail(body.email);
+    const password = String(body.password || "");
+    const users = await readUsers();
+    const user = users.find((entry) => entry.email === email);
+
+    if (!user || !verifyPassword(password, user.passwordHash)) {
+      return sendJson(response, 401, { error: "Incorrect email or password." });
+    }
+
+    const token = createSession(customerSessions, {
+      userId: user.id,
+      email: user.email
+    });
+
+    return sendJson(
+      response,
+      200,
+      {
+        success: true,
+        user: publicUser(user)
+      },
+      {
+        "Set-Cookie": buildCookie(CUSTOMER_SESSION_COOKIE, token)
+      }
+    );
+  }
+
+  if (request.method === "POST" && url.pathname === "/api/auth/logout") {
+    const cookies = getCookies(request);
+    const token = cookies[CUSTOMER_SESSION_COOKIE];
+    if (token) {
+      customerSessions.delete(token);
+    }
+
+    return sendJson(
+      response,
+      200,
+      { success: true },
+      {
+        "Set-Cookie": buildCookie(CUSTOMER_SESSION_COOKIE, "", { maxAge: 0 })
+      }
+    );
+  }
+
   if (request.method === "POST" && url.pathname === "/api/checkout/initiate") {
     const payload = normalizeCheckoutPayload(await readJsonBody(request));
 
@@ -519,7 +718,7 @@ async function handleApi(request, response, url) {
       return sendJson(response, 401, { error: "Incorrect owner email or password." });
     }
 
-    const token = createSession(email);
+    const token = createSession(adminSessions, { email });
     return sendJson(
       response,
       200,
@@ -531,14 +730,14 @@ async function handleApi(request, response, url) {
         }
       },
       {
-        "Set-Cookie": `${SESSION_COOKIE}=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax`
+        "Set-Cookie": buildCookie(ADMIN_SESSION_COOKIE, token)
       }
     );
   }
 
   if (request.method === "POST" && url.pathname === "/api/admin/logout") {
     const cookies = getCookies(request);
-    const token = cookies[SESSION_COOKIE];
+    const token = cookies[ADMIN_SESSION_COOKIE];
     if (token) {
       adminSessions.delete(token);
     }
@@ -548,7 +747,7 @@ async function handleApi(request, response, url) {
       200,
       { success: true },
       {
-        "Set-Cookie": `${SESSION_COOKIE}=; HttpOnly; Path=/; Max-Age=0; SameSite=Lax`
+        "Set-Cookie": buildCookie(ADMIN_SESSION_COOKIE, "", { maxAge: 0 })
       }
     );
   }

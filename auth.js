@@ -36,11 +36,6 @@ function setActiveTab(tab) {
 }
 
 function completeAuth(user, provider) {
-  setSession({
-    email: user.email,
-    name: user.name,
-    provider: provider || user.provider || "email"
-  });
   goToShop();
 }
 
@@ -50,12 +45,12 @@ authTabs.forEach((button) => {
   });
 });
 
-signInForm?.addEventListener("submit", (event) => {
+signInForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const data = new FormData(signInForm);
 
   try {
-    const user = loginUser({
+    const user = await loginUser({
       email: data.get("email"),
       password: data.get("password")
     });
@@ -65,7 +60,7 @@ signInForm?.addEventListener("submit", (event) => {
   }
 });
 
-signUpForm?.addEventListener("submit", (event) => {
+signUpForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   const data = new FormData(signUpForm);
   const password = String(data.get("password") || "");
@@ -77,7 +72,7 @@ signUpForm?.addEventListener("submit", (event) => {
   }
 
   try {
-    const user = registerUser({
+    const user = await registerUser({
       name: data.get("name"),
       email: data.get("email"),
       password
@@ -89,11 +84,11 @@ signUpForm?.addEventListener("submit", (event) => {
 });
 
 googleBtn?.addEventListener("click", () => {
-  completeAuth(socialSignIn("google"), "google");
+  showMessage("Google sign-in is not connected yet. Use email sign-in for now.", "info");
 });
 
 appleBtn?.addEventListener("click", () => {
-  completeAuth(socialSignIn("apple"), "apple");
+  showMessage("Apple sign-in is not connected yet. Use email sign-in for now.", "info");
 });
 
 enterShopBtn?.addEventListener("click", goToShop);
@@ -102,8 +97,18 @@ guestShopLink?.addEventListener("click", (event) => {
   goToShop();
 });
 
-if (getSession()) {
-  goToShop();
+async function initializeAuthPage() {
+  setActiveTab("sign-in");
+
+  if (window.location.protocol === "file:") {
+    showMessage("Run the DE GLEE server with npm start before using account authentication.", "info");
+    return;
+  }
+
+  const session = await getSession();
+  if (session) {
+    goToShop();
+  }
 }
 
-setActiveTab("sign-in");
+initializeAuthPage();

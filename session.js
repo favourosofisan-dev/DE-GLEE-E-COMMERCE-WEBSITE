@@ -1,107 +1,87 @@
-const SESSION_KEY = "deglee-session-v1";
-const USERS_KEY = "deglee-users-v1";
+async function readJsonResponse(response) {
+  const text = await response.text();
+  if (!text) {
+    return {};
+  }
 
-function getSession() {
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
-    return raw ? JSON.parse(raw) : null;
+    return JSON.parse(text);
   } catch {
+    throw new Error("The DE GLEE server returned an invalid response. Restart npm start and reload the page.");
+  }
+}
+
+async function requestAuth(path, payload, fallbackMessage) {
+  if (window.location.protocol === "file:") {
+    throw new Error("Authentication needs the DE GLEE server. Run npm start and open http://127.0.0.1:3000.");
+  }
+
+  let response;
+  try {
+    response = await fetch(path, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
+  } catch {
+    throw new Error("Unable to reach the DE GLEE server. Start npm start, then reload http://127.0.0.1:3000.");
+  }
+
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    throw new Error("Authentication is not connected to the DE GLEE backend yet. Open the site with npm start at http://127.0.0.1:3000.");
+  }
+
+  const data = await readJsonResponse(response);
+  if (!response.ok) {
+    throw new Error(data.error || data.details || fallbackMessage);
+  }
+
+  return data.user;
+}
+
+async function getSession() {
+  if (window.location.protocol === "file:") {
     return null;
   }
-}
 
-function setSession(user) {
-  localStorage.setItem(
-    SESSION_KEY,
-    JSON.stringify({
-      email: user.email,
-      name: user.name || user.email.split("@")[0],
-      provider: user.provider || "email"
-    })
-  );
-}
+  const response = await fetch("/api/auth/session", {
+    credentials: "include",
+    headers: {
+      Accept: "application/json"
+    }
+  });
 
-function clearSession() {
-  localStorage.removeItem(SESSION_KEY);
-}
-
-function getUsers() {
-  try {
-    const raw = localStorage.getItem(USERS_KEY);
-    return raw ? JSON.parse(raw) : [];
-  } catch {
-    return [];
-  }
-}
-
-function saveUsers(users) {
-  localStorage.setItem(USERS_KEY, JSON.stringify(users));
-}
-
-function hashPassword(password) {
-  return btoa(unescape(encodeURIComponent(password)));
-}
-
-function findUserByEmail(email) {
-  const normalized = email.trim().toLowerCase();
-  return getUsers().find((user) => user.email === normalized);
-}
-
-function registerUser({ email, password, name }) {
-  const normalized = email.trim().toLowerCase();
-
-  if (!normalized || !password) {
-    throw new Error("Email and password are required.");
+  if (!response.ok) {
+    return null;
   }
 
-  if (password.length < 6) {
-    throw new Error("Password must be at least 6 characters.");
-  }
-
-  if (findUserByEmail(normalized)) {
-    throw new Error("An account with this email already exists.");
-  }
-
-  const users = getUsers();
-  const user = {
-    email: normalized,
-    name: name?.trim() || normalized.split("@")[0],
-    passwordHash: hashPassword(password),
-    provider: "email",
-    createdAt: Date.now()
-  };
-
-  users.push(user);
-  saveUsers(users);
-  return user;
+  const data = await readJsonResponse(response);
+  return data.user || null;
 }
 
-function loginUser({ email, password }) {
-  const normalized = email.trim().toLowerCase();
-  const user = findUserByEmail(normalized);
-
-  if (!user || user.passwordHash !== hashPassword(password)) {
-    throw new Error("Incorrect email or password.");
-  }
-
-  return user;
+async function registerUser(payload) {
+  return requestAuth("/api/auth/register", payload, "Unable to create account.");
 }
 
-function socialSignIn(provider) {
-  const email = `${provider}-user@deglee.demo`;
-  let user = findUserByEmail(email);
+async function loginUser(payload) {
+  return requestAuth("/api/auth/login", payload, "Unable to sign in.");
+}
 
-  if (!user) {
-    const users = getUsers();
-    user = {
-      email,
-      name: provider === "google" ? "Google User" : "Apple User",
-      provider,
-      createdAt: Date.now()
-    };
-    users.push(user);
-    saveUsers(users);
+async function clearSession() {
+  if (window.location.protocol === "file:") {
+    return;
   }
 
-  return user;
+  await fetch("/api/auth/logout", {
+    method: "POST",
+    credentials: "include",
+    headers: {
+      Accept: "application/json"
+    }
+  });
 }
