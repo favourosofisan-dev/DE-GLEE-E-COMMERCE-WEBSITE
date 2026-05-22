@@ -36,7 +36,7 @@ services:
         sync: false
       - key: SMTP_FROM
         sync: false
-    disks:
-      - name: de-glee-storage
-        mountPath: /var/data
-        sizeGB: 1
+    disk:
+      name: de-glee-storage
+      mountPath: /var/data
+      sizeGB: 1
