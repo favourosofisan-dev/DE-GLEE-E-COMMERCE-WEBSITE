@@ -964,7 +964,9 @@ async function serveStatic(request, response, url) {
   }
 }
 
-const server = http.createServer(async (request, response) => {
+// Convert the existing server logic into a request handler that can be exported
+// for serverless platforms (Vercel) while still allowing local `listen()`.
+const requestHandler = async (request, response) => {
   try {
     const url = new URL(request.url, `http://${request.headers.host || `${HOST}:${PORT}`}`);
 
@@ -980,21 +982,32 @@ const server = http.createServer(async (request, response) => {
       details: error.message
     });
   }
+};
+
+// Create a local HTTP server for development only. In production (Vercel)
+// we export the `requestHandler` so the platform can invoke it.
+const server = http.createServer(requestHandler);
+
+ensureDataFiles().catch((error) => {
+  console.error("Unable to ensure data files:", error);
+  if (process.env.NODE_ENV !== "production") {
+    process.exit(1);
+  }
 });
 
-ensureDataFiles()
-  .then(() => {
-    server.listen(PORT, HOST, () => {
-      console.log(`DE GLEE server running at http://${HOST}:${PORT}`);
-      console.log(`Admin email: ${ADMIN_EMAIL}`);
-      console.log(
-        ADMIN_PASSWORD === "ChangeMe123!"
-          ? "Admin password is using the default value. Set ADMIN_PASSWORD before sharing this."
-          : "Admin password loaded from environment."
-      );
-    });
-  })
-  .catch((error) => {
-    console.error("Unable to start server:", error);
-    process.exit(1);
+if (process.env.NODE_ENV !== "production") {
+  server.listen(PORT, HOST, () => {
+    console.log(`DE GLEE server running at http://${HOST}:${PORT}`);
+    console.log(`Admin email: ${ADMIN_EMAIL}`);
+    console.log(
+      ADMIN_PASSWORD === "ChangeMe123!"
+        ? "Admin password is using the default value. Set ADMIN_PASSWORD before sharing this."
+        : "Admin password loaded from environment."
+    );
   });
+} else {
+  console.log("DE GLEE ready for serverless hosting (production). Files ensured and handler exported.");
+}
+
+module.exports = requestHandler;
+
