@@ -2,6 +2,10 @@
   "version": 2,
   "builds": [
     {
+      "src": "**/*.{css,js,png,jpg,jpeg,svg,ico,webp,gif}",
+      "use": "@vercel/static"
+    },
+    {
       "src": "server.js",
       "use": "@vercel/node"
     }
