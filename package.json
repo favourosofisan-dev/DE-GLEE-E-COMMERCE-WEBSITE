@@ -5,5 +5,8 @@
   "description": "DE GLEE beauty storefront with protected owner dashboard",
   "scripts": {
     "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
   }
 }

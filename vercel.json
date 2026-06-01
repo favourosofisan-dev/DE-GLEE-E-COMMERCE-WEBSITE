@@ -8,11 +8,12 @@
   ],
   "routes": [
     {
+      "src": "/(.*\\.(css|js|png|jpg|jpeg|svg|ico|webp|gif))",
+      "dest": "/$1"
+    },
+    {
       "src": "/(.*)",
-      "dest": "server.js"
+      "dest": "/server.js"
     }
-  ],
-  "env": {
-    "NODE_ENV": "production"
-  }
+  ]
 }
