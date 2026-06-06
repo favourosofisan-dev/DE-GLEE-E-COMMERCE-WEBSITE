@@ -9,10 +9,12 @@ const vm = require("vm");
 const { URL } = require("url");
 const express = require("express");
 
+loadEnvFile(path.join(__dirname, ".env"));
+
 const HOST = process.env.HOST || "127.0.0.1";
 const PORT = Number(process.env.PORT || 3000);
 const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || "degleebeautyandcosmetics@gmail.com").trim().toLowerCase();
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || "ChangeMe123!";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || process.env.ADMIN_PASSWORd || "ChangeMe123!";
 const PAYMENT_ACCOUNT_NUMBER = String(process.env.PAYMENT_ACCOUNT_NUMBER || "8061632975").trim();
 const ORDER_ALERT_EMAIL = String(process.env.ORDER_ALERT_EMAIL || "degleebeautyandcosmetics@gmail.com").trim();
 const WHATSAPP_PHONE = String(process.env.WHATSAPP_PHONE || "2348061632975").replace(/\D/g, "");
@@ -47,6 +49,33 @@ const MIME_TYPES = {
 
 const adminSessions = new Map();
 const customerSessions = new Map();
+
+function loadEnvFile(filePath) {
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
+
+  const entries = fs.readFileSync(filePath, "utf8").split(/\r?\n/u);
+  entries.forEach((entry) => {
+    const line = entry.trim();
+    if (!line || line.startsWith("#")) {
+      return;
+    }
+
+    const separatorIndex = line.indexOf("=");
+    if (separatorIndex < 1) {
+      return;
+    }
+
+    const key = line.slice(0, separatorIndex).trim();
+    const rawValue = line.slice(separatorIndex + 1).trim();
+    const value = rawValue.replace(/^(['"])(.*)\1$/u, "$2");
+
+    if (!process.env[key]) {
+      process.env[key] = value;
+    }
+  });
+}
 
 async function ensureDataFiles() {
   await fsp.mkdir(DATA_DIR, { recursive: true });
@@ -906,6 +935,10 @@ function normalizeProduct(product) {
 }
 
 function resolveStaticPath(urlPath) {
+  if (urlPath === "/favicon.ico") {
+    return path.join(ROOT_DIR, "favicon.svg");
+  }
+
   if (urlPath === "/" || urlPath === "/index") {
     return path.join(ROOT_DIR, "index.html");
   }

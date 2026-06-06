@@ -29,6 +29,10 @@ function setAdminStatus(message) {
   }
 }
 
+function setNewProductButtonActive(isActive) {
+  newProductBtn?.classList.toggle("is-active", isActive);
+}
+
 function renderNotificationsConfig() {
   if (!adminConfigBanner || !notificationsConfig) {
     return;
@@ -117,6 +121,7 @@ function createEmptyProduct() {
 }
 
 function selectProduct(productId) {
+  setNewProductButtonActive(false);
   selectedProductId = productId;
   const product = findProductById(productId) || createEmptyProduct();
   fillForm(product);
@@ -142,20 +147,23 @@ function renderAdminProductList() {
   adminProductList.innerHTML = products
     .map(
       (product) => `
-        <button
+        <article
           class="admin-product-card${product.id === selectedProductId ? " is-active" : ""}"
-          type="button"
-          data-product-id="${product.id}"
         >
-          <img src="${encodeURI(product.image || "")}" alt="${product.name}">
-          <span class="admin-product-copy">
-            <strong>${product.name}</strong>
-            <span class="admin-product-meta">
-              <span>${product.categoryLabel}</span>
-              <span>${formatPrice(product.price)}</span>
+          <button class="admin-product-select" type="button" data-product-id="${product.id}">
+            <img src="${encodeURI(product.image || "")}" alt="${product.name}">
+            <span class="admin-product-copy">
+              <strong>${product.name}</strong>
+              <span class="admin-product-meta">
+                <span>${product.categoryLabel}</span>
+                <span>${formatPrice(product.price)}</span>
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+          <button class="admin-product-delete" type="button" data-delete-product-id="${product.id}" aria-label="Delete ${product.name}">
+            Delete
+          </button>
+        </article>
       `
     )
     .join("");
@@ -174,6 +182,7 @@ function persistProduct(formData) {
   };
 
   return saveProductRecord(payload).then((savedProduct) => {
+    setNewProductButtonActive(false);
     selectedProductId = savedProduct.id;
     fillForm(savedProduct);
     renderAdminProductList();
@@ -186,7 +195,16 @@ function deleteSelectedProduct() {
     return;
   }
 
-  return deleteProductRecord(selectedProductId).then(() => {
+  return deleteProductById(selectedProductId);
+}
+
+function deleteProductById(productId) {
+  const product = findProductById(productId);
+  if (!productId || !product || !window.confirm(`Delete "${product.name}" from the catalog?`)) {
+    return Promise.resolve();
+  }
+
+  return deleteProductRecord(productId).then(() => {
     const products = getProducts();
 
     if (products.length) {
@@ -200,11 +218,12 @@ function deleteSelectedProduct() {
     }
 
     renderAdminProductList();
-    setAdminStatus("Product deleted.");
+    setAdminStatus(`Deleted "${product.name}".`);
   });
 }
 
 function startNewProduct() {
+  setNewProductButtonActive(true);
   const product = createEmptyProduct();
   selectedProductId = "";
   fillForm(product);
@@ -355,6 +374,14 @@ async function resendOwnerAlert(orderId) {
 }
 
 adminProductList?.addEventListener("click", (event) => {
+  const deleteButton = event.target.closest("[data-delete-product-id]");
+  if (deleteButton) {
+    deleteProductById(deleteButton.dataset.deleteProductId).catch((error) => {
+      setAdminStatus(error.message);
+    });
+    return;
+  }
+
   const card = event.target.closest("[data-product-id]");
   if (!card) {
     return;

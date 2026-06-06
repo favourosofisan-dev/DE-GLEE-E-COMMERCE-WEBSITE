@@ -276,6 +276,15 @@ h2 {
   box-shadow: inset 0 0 0 1px var(--line);
 }
 
+.button-secondary:hover {
+  background: rgba(255, 255, 255, 0.95);
+}
+
+.button-secondary:active {
+  background: rgba(239, 229, 247, 0.8);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
 .hero-points {
   display: grid;
   gap: 10px;
@@ -509,6 +518,25 @@ h2 {
   color: rgba(255, 250, 243, 0.68);
 }
 
+.footer-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  text-align: right;
+}
+
+.footer-owner-link {
+  color: rgba(255, 250, 243, 0.42);
+  font-size: 0.78rem;
+}
+
+.footer-owner-link:hover,
+.footer-owner-link:focus-visible {
+  color: rgba(255, 250, 243, 0.82);
+  text-decoration: underline;
+}
+
 .brand-footer .brand-wordmark strong {
   color: var(--white);
 }
@@ -542,21 +570,41 @@ body.menu-open {
 
 @media (max-width: 760px) {
   .shell {
-    width: min(calc(100% - 20px), var(--shell));
+    width: min(calc(100% - 16px), var(--shell));
   }
 
   .site-header {
-    padding-top: 12px;
+    padding-top: 8px;
   }
 
   .header-shell {
     position: relative;
     flex-wrap: wrap;
-    border-radius: 28px;
+    border-radius: 24px;
+    padding: 12px 14px !important;
+    gap: 12px;
   }
 
-  .menu-toggle {
+  .brand {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .brand-logo {
+    width: 80px;
+    height: 50px;
+  }
+
+  .brand-wordmark strong {
+    font-size: 1.3rem;
+  }
+
+  .menu-toggle,
+  .cart-toggle {
     display: inline-flex;
+    min-height: 42px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
   }
 
   .site-nav {
@@ -564,30 +612,47 @@ body.menu-open {
     width: 100%;
     flex-direction: column;
     align-items: flex-start;
-    padding-top: 10px;
-    gap: 14px;
+    padding-top: 8px;
+    gap: 10px;
+    order: 3;
   }
 
   .site-nav.is-open {
     display: flex;
   }
 
+  .site-nav a {
+    font-size: 0.95rem;
+    padding: 8px 0;
+  }
+
   .hero,
   .section-grid,
   .edit,
   .cta-panel,
-  .footer-shell {
-    padding: 24px;
-    border-radius: 28px;
+  .footer-shell,
+  .shop,
+  .recommendation {
+    padding: 20px;
+    border-radius: 24px;
+    margin-left: 0;
+    margin-right: 0;
   }
 
   h1 {
     max-width: none;
-    font-size: clamp(3rem, 15vw, 4.8rem);
+    font-size: clamp(2.5rem, 12vw, 4.2rem);
+    line-height: 1.1;
   }
 
   h2 {
-    font-size: clamp(2.25rem, 11vw, 3.4rem);
+    font-size: clamp(1.8rem, 9vw, 3rem);
+    line-height: 1.1;
+  }
+
+  .eyebrow {
+    font-size: 0.95rem;
+    margin-bottom: 10px;
   }
 
   .hero-stack,
@@ -611,6 +676,28 @@ body.menu-open {
   .footer-shell {
     align-items: flex-start;
     flex-direction: column;
+  }
+
+  .footer-meta {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .hero-text,
+  .story-card p,
+  .experience-card p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .button {
+    min-height: 48px;
+    padding: 12px 20px;
+    font-size: 0.95rem;
+  }
+
+  .button-block {
+    width: 100%;
   }
 }
 
@@ -1371,31 +1458,65 @@ body.modal-open {
 @media (max-width: 760px) {
   .shop-toolbar {
     grid-template-columns: 1fr;
+    gap: 12px;
+    margin: 18px 0 16px;
   }
 
   .shop-grid {
     grid-template-columns: 1fr;
-  }
-
-  .recommendation,
-  .shop {
-    padding: 24px;
+    gap: 14px;
   }
 
   .recommendation-result-head {
     flex-direction: column;
+    gap: 12px;
   }
 
   .recommendation-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .product-card {
     grid-template-columns: 1fr;
   }
 
   .product-card-actions {
     grid-template-columns: 1fr;
+    gap: 10px;
   }
 
   .site-nav.is-open ~ .cart-toggle,
   .header-shell .cart-toggle {
     order: 3;
+  }
+
+  .search-field input,
+  .sort-field select,
+  .checkout-form input,
+  .recommendation-form select {
+    min-height: 48px;
+    font-size: 16px;
+  }
+
+  .filter-chip {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+  }
+
+  .cart-drawer {
+    width: 100% !important;
+    max-width: none;
+    border-radius: 20px 20px 0 0;
+    max-height: 80vh;
+  }
+
+  .modal-panel {
+    padding: 20px;
+  }
+
+  .product-modal-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

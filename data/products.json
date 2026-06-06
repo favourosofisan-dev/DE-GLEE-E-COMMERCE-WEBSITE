@@ -5,7 +5,7 @@
     "category": "body-care",
     "categoryLabel": "Body care",
     "price": 24,
-    "description": "All-day hydration with a silky, non-greasy finish for soft, touchable skin.",
+    "description": "All day hydration with a silky, non greasy finish for soft, touchable skin.",
     "image": "images/24H moidture body lotion.jpeg",
     "badge": "Bestseller"
   },
@@ -21,7 +21,7 @@
   {
     "id": "p-003",
     "name": "Advanced Korean Body Oil",
-    "category": "body-oil",
+    "category": "body oil",
     "categoryLabel": "Body oil",
     "price": 32,
     "description": "Lightweight nourishment that leaves skin luminous and deeply conditioned.",
@@ -52,12 +52,12 @@
     "category": "skincare",
     "categoryLabel": "Skincare",
     "price": 26,
-    "description": "Daily brightening cream for a clearer, more even-looking complexion.",
+    "description": "Daily brightening cream for a clearer, more even looking complexion.",
     "image": "images/bright + clear face cream.jpeg"
   },
   {
     "id": "p-007",
-    "name": "Bright & Balance Anti-Aging",
+    "name": "Bright & Balance Anti Aging",
     "category": "skincare",
     "categoryLabel": "Skincare",
     "price": 45,
@@ -80,13 +80,13 @@
     "category": "treatment",
     "categoryLabel": "Treatment",
     "price": 34,
-    "description": "Barrier-supporting formula that locks in moisture and calms sensitivity.",
+    "description": "Barrier supporting formula that locks in moisture and calms sensitivity.",
     "image": "images/CERAMIDE.jpeg"
   },
   {
     "id": "p-010",
     "name": "Dove Body Love Lotion",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 16,
     "description": "Nourishing body lotion with a soft, comforting scent and lasting moisture.",
@@ -104,10 +104,10 @@
   {
     "id": "p-012",
     "name": "Dove Exfoliating Body Polish",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 18,
-    "description": "Gentle polish that smooths and renews for silkier-feeling skin.",
+    "description": "Gentle polish that smooths and renews for silkier feeling skin.",
     "image": "images/DOVE EXFOLISTING BODY POLISH.jpeg"
   },
   {
@@ -122,10 +122,10 @@
   {
     "id": "p-014",
     "name": "Dr Teal's Bath & Body Oil",
-    "category": "body-oil",
+    "category": "body oil",
     "categoryLabel": "Body oil",
     "price": 22,
-    "description": "Aromatherapy-infused oil for bath or body, easing tension while you glow.",
+    "description": "Aromatherapy infused oil for bath or body, easing tension while you glow.",
     "image": "images/dr teals bath and body oil.jpeg"
   },
   {
@@ -134,7 +134,7 @@
     "category": "serum",
     "categoryLabel": "Serum",
     "price": 29,
-    "description": "Serum-infused lotion that delivers a burst of hydration and visible radiance.",
+    "description": "Serum infused lotion that delivers a burst of hydration and visible radiance.",
     "image": "images/gluta hya serum burst lotion.jpeg",
     "badge": "Glow edit"
   },
@@ -144,16 +144,16 @@
     "category": "skincare",
     "categoryLabel": "Skincare",
     "price": 27,
-    "description": "Even-tone face cream that supports a healthy, lit-from-within glow.",
+    "description": "Even tone face cream that supports a healthy, lit from within glow.",
     "image": "images/healthy glow lightening face cream.jpeg"
   },
   {
     "id": "p-017",
     "name": "Jergens Body Lotion",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 15,
-    "description": "Classic daily moisture with a familiar, comforting skin-softening feel.",
+    "description": "Classic daily moisture with a familiar, comforting skin softening feel.",
     "image": "images/jergens body lotion.jpeg"
   },
   {
@@ -171,16 +171,16 @@
     "category": "cleansing",
     "categoryLabel": "Cleansing",
     "price": 19,
-    "description": "Glow-boosting body wash with a clean lather and a fresh, polished finish.",
+    "description": "Glow boosting body wash with a clean lather and a fresh, polished finish.",
     "image": "images/miu skin glowing body wash.jpeg"
   },
   {
     "id": "p-020",
     "name": "Naturium Body Lotion",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 38,
-    "description": "Science-forward body lotion with a luxurious texture and lasting hydration.",
+    "description": "Science forward body lotion with a luxurious texture and lasting hydration.",
     "image": "images/NATURIUM BODY LOTION.jpeg",
     "badge": "Premium"
   },
@@ -190,16 +190,16 @@
     "category": "cleansing",
     "categoryLabel": "Cleansing",
     "price": 28,
-    "description": "BHA-powered cleanser that gently exfoliates while keeping skin balanced.",
+    "description": "BHA powered cleanser that gently exfoliates while keeping skin balanced.",
     "image": "images/NINE LESS BHA CLEANER.jpeg"
   },
   {
     "id": "p-022",
     "name": "Olay Body Lotion",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 22,
-    "description": "Trusted body hydration with a smooth, fast-absorbing finish.",
+    "description": "Trusted body hydration with a smooth, fast absorbing finish.",
     "image": "images/olay body lotion.jpeg"
   },
   {
@@ -208,7 +208,7 @@
     "category": "skincare",
     "categoryLabel": "Skincare",
     "price": 48,
-    "description": "Iconic regenerating care that supports firmer, younger-looking skin over time.",
+    "description": "Iconic regenerating care that supports firmer, younger looking skin over time.",
     "image": "images/olay regenerist.jpeg",
     "badge": "Bestseller"
   },
@@ -272,13 +272,13 @@
     "category": "cleansing",
     "categoryLabel": "Cleansing",
     "price": 18,
-    "description": "Foaming wash with tea tree to clarify and refresh oily or breakout-prone skin.",
+    "description": "Foaming wash with tea tree to clarify and refresh oily or breakout prone skin.",
     "image": "images/TEA TREE FOAMING FACE WASH.jpeg"
   },
   {
     "id": "p-031",
     "name": "Vaseline Body Lotion",
-    "category": "body-care",
+    "category": "body care",
     "categoryLabel": "Body care",
     "price": 11,
     "description": "Essential daily moisture that seals in hydration from head to toe.",
@@ -287,7 +287,7 @@
   {
     "id": "p-032",
     "name": "Vaseline Vitamin B3 Body Oil",
-    "category": "body-oil",
+    "category": "body oil",
     "categoryLabel": "Body oil",
     "price": 19,
     "description": "Vitamin B3 body oil for nourished skin with a healthy, satin sheen.",

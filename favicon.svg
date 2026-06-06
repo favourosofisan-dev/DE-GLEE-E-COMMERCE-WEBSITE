@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background with rounded corners -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4a2870;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#241338;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <rect width="64" height="64" rx="12" fill="url(#bgGradient)"/>
+  
+  <!-- Accent circle -->
+  <circle cx="50" cy="14" r="9" fill="#c79b2f" opacity="0.8"/>
+  
+  <!-- Brand text -->
+  <text x="32" y="26" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#fffdfc" letter-spacing="1">D</text>
+  <text x="32" y="42" text-anchor="middle" font-family="Georgia, serif" font-size="18" font-weight="700" fill="#c79b2f">G</text>
+</svg>

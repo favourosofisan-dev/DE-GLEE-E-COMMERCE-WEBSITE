@@ -60,6 +60,19 @@
   flex-wrap: wrap;
 }
 
+#newProductBtn {
+  background: #ffffff;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+
+#newProductBtn.is-active,
+#newProductBtn:active {
+  color: var(--white);
+  background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+  box-shadow: 0 16px 34px rgba(92, 48, 139, 0.24);
+}
+
 .admin-layout {
   display: grid;
   grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
@@ -201,8 +214,8 @@
 
 .admin-product-card {
   display: grid;
-  grid-template-columns: 72px minmax(0, 1fr);
-  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
   align-items: center;
   width: 100%;
   padding: 12px;
@@ -211,6 +224,15 @@
   border-radius: 24px;
   box-shadow: inset 0 0 0 1px var(--line);
   transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.admin-product-select {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+  min-width: 0;
+  text-align: left;
 }
 
 .admin-product-card:hover,
@@ -243,6 +265,22 @@
   gap: 12px;
   color: var(--text-soft);
   font-size: 0.82rem;
+}
+
+.admin-product-delete {
+  min-height: 34px;
+  padding: 8px 11px;
+  border-radius: 999px;
+  color: #7a2340;
+  background: rgba(214, 72, 110, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(214, 72, 110, 0.18);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.admin-product-delete:hover,
+.admin-product-delete:focus-visible {
+  background: rgba(214, 72, 110, 0.16);
 }
 
 .admin-editor {
@@ -322,24 +360,143 @@
   .admin-hero,
   .admin-layout {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .admin-hero {
+    padding: 28px;
+  }
+
+  .admin-hero h1 {
+    max-width: none;
+    font-size: clamp(2rem, 5vw, 4rem);
   }
 }
 
 @media (max-width: 760px) {
+  .admin-shell {
+    padding: 12px;
+  }
+
   .admin-hero,
   .admin-sidebar,
-  .admin-editor {
-    padding: 24px;
+  .admin-editor,
+  .admin-orders {
+    padding: 18px;
+    border-radius: 20px;
   }
 
-  .admin-form-grid {
+  .admin-hero {
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .admin-hero h1 {
+    max-width: none;
+    font-size: clamp(1.8rem, 8vw, 2.8rem);
+  }
+
+  .admin-hero-copy {
+    max-width: none;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-top: 14px;
+  }
+
+  .admin-hero-panel {
+    padding: 18px;
+    gap: 12px;
+  }
+
+  .admin-hero-actions,
+  .admin-form-actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .admin-hero-actions .button,
+  .admin-form-actions .button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .admin-layout {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
 
-  .admin-upload-card,
+  .admin-sidebar,
+  .admin-editor {
+    padding: 18px;
+  }
+
   .admin-sidebar-head,
   .admin-editor-head {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .admin-form-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .admin-form-grid label {
+    margin-bottom: 0;
+  }
+
+  .admin-form-grid input,
+  .admin-form-grid textarea {
+    min-height: 44px;
+    font-size: 16px;
+    padding: 12px 14px;
+  }
+
+  .admin-upload-card {
+    flex-direction: column;
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .admin-file-button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+  .admin-product-list {
+    max-height: 50vh;
+    gap: 8px;
+  }
+
+  .admin-product-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
+  }
+
+  .admin-product-delete {
+    justify-self: start;
+  }
+
+  .admin-orders {
+    padding: 18px;
+  }
+
+  .admin-orders-head {
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .admin-order-list {
+    gap: 12px;
+  }
+
+  .admin-order-card {
+    padding: 14px;
+    grid-template-columns: 1fr;
+    gap: 10px;
   }
 }

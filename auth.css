@@ -249,6 +249,20 @@
   text-underline-offset: 3px;
 }
 
+.auth-owner-access {
+  margin: 10px 0 0;
+  text-align: center;
+  color: rgba(102, 87, 117, 0.78);
+  font-size: 0.78rem;
+}
+
+.auth-owner-access a {
+  color: rgba(125, 75, 179, 0.82);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 .auth-demo-note {
   margin: 16px 0 0;
   color: var(--text-soft);
@@ -264,34 +278,131 @@
 
   .auth-brand {
     min-height: auto;
-    padding: 36px 24px 28px;
+    padding: 32px 20px 24px;
   }
 
   .auth-brand-inner {
     text-align: center;
     margin: 0 auto;
+    width: min(100%, 380px);
   }
 
   .auth-brand-logo {
     margin-inline: auto;
+    width: 100px;
+    margin-bottom: 20px;
+  }
+
+  .auth-brand h1 {
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    margin-bottom: 12px;
+  }
+
+  .auth-brand p {
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
   .auth-brand-points {
     text-align: left;
+    margin-top: 20px;
+    gap: 10px;
   }
 }
 
 @media (max-width: 480px) {
   .auth-page-body {
-    min-height: auto;
+    min-height: 100svh;
   }
 
   .auth-panel {
-    padding: 26px 20px;
-    border-radius: 28px;
+    width: 100%;
+    padding: 20px 16px;
+    border-radius: 24px;
+    max-height: none;
   }
 
   .auth-panel-wrap {
-    padding: 16px 14px 28px;
+    padding: 12px 8px 20px;
+    min-height: 100svh;
+    align-items: center;
+  }
+
+  .auth-panel-head h2 {
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+  }
+
+  .auth-panel-head p {
+    font-size: 0.85rem;
+  }
+
+  .auth-tabs {
+    margin: 18px 0 14px;
+    gap: 6px;
+    padding: 5px;
+  }
+
+  .auth-tab {
+    min-height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .auth-form {
+    gap: 12px;
+  }
+
+  .auth-form label {
+    gap: 6px;
+    font-size: 0.85rem;
+  }
+
+  .auth-form input {
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 16px;
+    border-radius: 12px;
+  }
+
+  .auth-social-btn {
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    gap: 10px;
+  }
+
+  .auth-social-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .auth-divider {
+    margin: 16px 0 12px;
+    font-size: 0.75rem;
+  }
+
+  .auth-message {
+    font-size: 0.82rem;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+  }
+
+  .auth-enter-shop {
+    margin-top: 16px;
+  }
+
+  .auth-guest {
+    margin-top: 14px;
+    font-size: 0.85rem;
+  }
+
+  .auth-owner-access {
+    margin-top: 8px;
+    font-size: 0.72rem;
+  }
+
+  .auth-demo-note {
+    margin-top: 12px;
+    font-size: 0.7rem;
   }
 }

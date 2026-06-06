@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/jpeg" href="/images/DE%20GLEE%20LOGO.jpeg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="shortcut icon" href="/favicon.svg">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -36,7 +37,6 @@
         <a href="#ai-recommendation">Skincare Recommendation</a>
         <a href="#about-us">About Us</a>
         <a href="#contact">Contact</a>
-        <a href="/admin-login">Owner dashboard</a>
         <a href="/">Account</a>
       </nav>
 
@@ -229,7 +229,13 @@
           <small>Beauty with a polished point of view</small>
         </span>
       </a>
-      <p class="footer-note">&copy; <span id="year"></span> DE GLEE. Curated beauty ecommerce.</p>
+      <div class="footer-meta">
+        <p class="footer-note">&copy; <span id="year"></span> DE GLEE. Curated beauty ecommerce.</p>
+        <div style="display: flex; gap: 16px; margin-top: 12px;">
+          <a href="/privacy-policy" style="font-size: 0.9rem; color: var(--text-soft); text-decoration: none; border-bottom: 1px solid currentColor;">Privacy Policy</a>
+          <a class="footer-owner-link" href="/admin-login" rel="nofollow">Owner access</a>
+        </div>
+      </div>
     </div>
   </footer>
 

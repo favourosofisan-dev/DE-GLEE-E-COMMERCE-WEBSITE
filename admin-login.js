@@ -1,5 +1,6 @@
 const adminLoginForm = document.getElementById("adminLoginForm");
 const adminLoginMessage = document.getElementById("adminLoginMessage");
+const localBackendUrl = "http://127.0.0.1:3000/admin-login";
 
 function showAdminLoginMessage(text, type = "error") {
   if (!adminLoginMessage) {
@@ -11,9 +12,25 @@ function showAdminLoginMessage(text, type = "error") {
   adminLoginMessage.hidden = !text;
 }
 
-async function checkExistingAdminSession() {
+function getLocalAccessWarning() {
+  const host = window.location.hostname;
+  const isLocalHost = host === "127.0.0.1" || host === "localhost";
+
   if (window.location.protocol === "file:") {
-    showAdminLoginMessage("Start the Node server and open http://127.0.0.1:3000/admin-login for protected owner access.");
+    return `Start the Node server and open ${localBackendUrl} for protected owner access.`;
+  }
+
+  if (isLocalHost && window.location.port && window.location.port !== "3000") {
+    return `This page is open on the wrong local server. Use ${localBackendUrl} so the owner login can reach the backend.`;
+  }
+
+  return "";
+}
+
+async function checkExistingAdminSession() {
+  const localAccessWarning = getLocalAccessWarning();
+  if (localAccessWarning) {
+    showAdminLoginMessage(localAccessWarning);
     return;
   }
 
@@ -35,6 +52,12 @@ async function checkExistingAdminSession() {
 
 adminLoginForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+
+  const localAccessWarning = getLocalAccessWarning();
+  if (localAccessWarning) {
+    showAdminLoginMessage(localAccessWarning);
+    return;
+  }
 
   const formData = new FormData(adminLoginForm);
   showAdminLoginMessage("Signing in...", "success");
